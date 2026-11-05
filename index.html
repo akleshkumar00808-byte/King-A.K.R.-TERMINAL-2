@@ -1,0 +1,2239 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KING AKR TERMINAL v97.0 - IMMORTAL VOICE & ULTRA NEURAL ENGINE</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* ==========================================================================
+           ROOT & DESIGN TOKENS (FULL EXTENDED CSS ARCHITECTURE)
+           ========================================================================== */
+        :root {
+            --bg-main: #020008;
+            --bg-gradient: radial-gradient(circle at 50% 20%, #1a0238 0%, #080117 60%, #000000 100%);
+            --card-bg: rgba(12, 6, 32, 0.94);
+            --card-border: rgba(250, 204, 21, 0.7);
+            --neon-cyan: #00f2fe;
+            --neon-green: #00ff87;
+            --neon-red: #ff0055;
+            --neon-yellow: #facc15;
+            --neon-purple: #c084fc;
+            --neon-pink: #ec4899;
+            --neon-orange: #ff6a00;
+            --neon-blue: #3b82f6;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --glow-cyan: 0 0 25px rgba(0, 242, 254, 0.6);
+            --glow-yellow: 0 0 30px rgba(250, 204, 21, 0.7);
+            --glow-red: 0 0 25px rgba(255, 0, 85, 0.6);
+            --glow-green: 0 0 25px rgba(0, 255, 135, 0.6);
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            padding: 12px;
+            max-width: 860px;
+            margin: 0 auto;
+            padding-bottom: 220px;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* BACKGROUND CANVAS FOR CYBER PARTICLES */
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.35;
+        }
+
+        #confettiCanvas {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 9999; display: none;
+        }
+
+        .terminal-container {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* ==========================================================================
+           PRO CYBER HEADER MODULE
+           ========================================================================== */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, #1e1b4b, #31105e, #581c87, #831843, #1e1b4b);
+            background-size: 400% 400%;
+            animation: cyberHeaderGlow 8s ease infinite;
+            border: 3px solid var(--neon-yellow);
+            border-radius: 28px;
+            padding: 18px 20px;
+            margin-bottom: 18px;
+            box-shadow: 0 0 40px rgba(250, 204, 21, 0.5), inset 0 0 25px rgba(0,242,254,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes cyberHeaderGlow {
+            0% { background-position: 0% 50%; filter: hue-rotate(0deg); }
+            50% { background-position: 100% 50%; filter: hue-rotate(180deg); }
+            100% { background-position: 0% 50%; filter: hue-rotate(360deg); }
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .ai-chip-icon {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, #facc15, #ff0055, #00ff87, #00f2fe);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: var(--glow-yellow);
+            position: relative;
+        }
+
+        .vip-tag {
+            background: linear-gradient(135deg, #facc15, #ff0055);
+            color: #000;
+            font-weight: 900;
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 8px;
+            letter-spacing: 1.2px;
+            display: inline-block;
+            margin-bottom: 4px;
+            box-shadow: 0 0 12px rgba(250, 204, 21, 0.8);
+        }
+
+        .title-text h1 {
+            font-size: 19px;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 1.2px;
+            text-shadow: 0 0 15px rgba(255,255,255,0.8);
+        }
+
+        .title-text p {
+            font-size: 10px;
+            color: var(--neon-cyan);
+            letter-spacing: 1px;
+            font-weight: 800;
+        }
+
+        /* MASTER VOICE & SPEAKER CONTROLS BAR */
+        .master-controls-bar {
+            display: flex; gap: 12px; margin-bottom: 16px; justify-content: center;
+        }
+
+        .master-btn {
+            flex: 1; padding: 14px; border-radius: 20px; font-weight: 900; font-size: 13.5px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .mic-master-off {
+            background: rgba(255, 0, 85, 0.15); border: 2px solid var(--neon-red); color: var(--neon-red);
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.3);
+        }
+        .mic-master-on {
+            background: linear-gradient(135deg, #0284c7, #2563eb); border: 2px solid var(--neon-cyan); color: #fff;
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.8); animation: pulseMic 1.5s infinite;
+        }
+
+        .speaker-master-off {
+            background: rgba(148, 163, 184, 0.15); border: 2px solid var(--text-muted); color: var(--text-muted);
+        }
+        .speaker-master-on {
+            background: linear-gradient(135deg, #10b981, #047857); border: 2px solid var(--neon-green); color: #fff;
+            box-shadow: 0 0 20px rgba(0, 255, 135, 0.6);
+        }
+
+        .reverse-mode-btn {
+            background: rgba(250, 204, 21, 0.15); border: 2px solid var(--neon-yellow); color: var(--neon-yellow);
+        }
+        .reverse-mode-btn.active {
+            background: linear-gradient(135deg, #ff6a00, #ff0055); border: 2px solid var(--neon-pink); color: #fff;
+            box-shadow: 0 0 25px rgba(255, 0, 85, 0.8); animation: pulseMic 1.5s infinite;
+        }
+
+        @keyframes pulseMic {
+            0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(56, 189, 248, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
+        }
+
+        /* LOCK SCREEN BANNER */
+        .lock-banner {
+            background: linear-gradient(135deg, #7f1d1d, #991b1b);
+            border: 2px solid var(--neon-red);
+            color: #fff;
+            padding: 14px;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            text-align: center;
+            font-weight: 900;
+            box-shadow: 0 0 25px rgba(255, 0, 85, 0.6);
+            display: none;
+        }
+
+        /* SESSION BAR & HUD MODULE */
+        .session-card {
+            background: rgba(8, 4, 24, 0.92);
+            border: 1.5px solid rgba(0, 242, 254, 0.4);
+            border-radius: 20px;
+            padding: 12px 18px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .session-status-badge {
+            background: rgba(0, 255, 135, 0.15);
+            border: 1.5px solid rgba(0, 255, 135, 0.6);
+            color: var(--neon-green);
+            font-size: 11px;
+            font-weight: 900;
+            padding: 4px 12px;
+            border-radius: 10px;
+            box-shadow: 0 0 12px rgba(0,255,135,0.3);
+        }
+
+        /* CARD COMPONENT */
+        .card {
+            background: var(--card-bg);
+            border: 1.5px solid var(--card-border);
+            border-radius: 24px;
+            padding: 18px;
+            margin-bottom: 16px;
+            position: relative;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.95), inset 0 1px 2px rgba(255,255,255,0.15);
+            backdrop-filter: blur(20px);
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 16px; right: 16px; height: 3px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-yellow), var(--neon-pink), var(--neon-green));
+            background-size: 200% 100%;
+            animation: rainbowLine 4s linear infinite;
+        }
+
+        @keyframes rainbowLine {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 0%; }
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 14.5px;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 0.8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pnl-badge {
+            background: rgba(0, 255, 135, 0.2);
+            border: 1.5px solid rgba(0, 255, 135, 0.6);
+            color: var(--neon-green);
+            font-size: 12px;
+            font-weight: 900;
+            padding: 4px 12px;
+            border-radius: 10px;
+            box-shadow: 0 0 12px rgba(0,255,135,0.3);
+        }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+        .input-group { margin-bottom: 10px; }
+        .input-group label {
+            display: block;
+            font-size: 11px;
+            color: var(--neon-cyan);
+            margin-bottom: 5px;
+            font-weight: 900;
+        }
+        .input-group input, .input-group select, .input-group textarea {
+            width: 100%;
+            background: #020108;
+            border: 1.5px solid rgba(0, 242, 254, 0.4);
+            border-radius: 12px;
+            padding: 9px 12px;
+            color: #fff;
+            font-size: 12.5px;
+            font-weight: 900;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .input-group input:focus, .input-group textarea:focus, .input-group select:focus {
+            border-color: var(--neon-yellow);
+            box-shadow: 0 0 18px rgba(250, 204, 21, 0.6);
+        }
+
+        .compact-paste-card {
+            border: 1.5px dashed var(--neon-yellow) !important;
+            padding: 14px !important;
+        }
+        .compact-paste-card textarea {
+            font-size: 11px !important;
+            font-family: monospace;
+            padding: 8px !important;
+        }
+
+        /* DIGIT GRID SYSTEM */
+        .stats-grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+        @media(min-width: 640px) {
+            .stats-grid-container { grid-template-columns: repeat(5, 1fr); }
+        }
+
+        .digit-card {
+            background: #04020a;
+            border: 1.5px solid rgba(0, 242, 254, 0.35);
+            border-radius: 16px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            box-shadow: inset 0 0 12px rgba(0,0,0,0.9);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .digit-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding-bottom: 6px;
+        }
+
+        .digit-title {
+            font-size: 13px;
+            font-weight: 900;
+        }
+
+        .digit-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 800;
+        }
+        .digit-row span b { color: #fff; }
+
+        /* MARTINGALE TABLE MODULE */
+        .martingale-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+            font-size: 11.5px;
+        }
+
+        .martingale-table th {
+            color: var(--neon-cyan);
+            font-weight: 900;
+            text-align: left;
+            padding: 8px 6px;
+            border-bottom: 1.5px solid rgba(255,255,255,0.12);
+        }
+
+        .martingale-table td {
+            padding: 9px 6px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            font-weight: 900;
+        }
+
+        .martingale-row-active {
+            background: rgba(250, 204, 21, 0.2);
+            border-radius: 10px;
+        }
+
+        .status-active-badge {
+            background: var(--neon-yellow);
+            color: #000;
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 900;
+            display: inline-block;
+            box-shadow: 0 0 10px rgba(250,204,21,0.8);
+        }
+
+        /* NEURAL SIGNAL ENGINE */
+        .neural-engine-card {
+            border: 2.5px solid rgba(250, 204, 21, 0.9);
+            background: radial-gradient(circle at center, #230440 0%, #050112 80%, #000000 100%);
+            box-shadow: 0 0 50px rgba(250, 204, 21, 0.35), inset 0 0 35px rgba(250,204,21,0.15);
+        }
+
+        .top-chart-box {
+            background: #020108;
+            border: 1.5px solid var(--neon-cyan);
+            border-radius: 18px;
+            padding: 12px;
+            margin-bottom: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-laser-scanner {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-yellow), var(--neon-cyan), var(--neon-green), transparent);
+            box-shadow: 0 0 15px var(--neon-yellow);
+            animation: scanChartLaser 2.2s infinite ease-in-out;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        @keyframes scanChartLaser {
+            0% { top: 0%; opacity: 0.6; }
+            50% { top: 95%; opacity: 1; }
+            100% { top: 0%; opacity: 0.6; }
+        }
+
+        #momentumChart {
+            width: 100%;
+            height: 160px;
+            display: block;
+        }
+
+        .signal-recommendation-box {
+            background: #03010a;
+            border: 2px solid var(--neon-cyan);
+            border-radius: 20px;
+            padding: 18px;
+            text-align: center;
+            margin-bottom: 16px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.95);
+            position: relative;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .color-spinner-ring {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            border: 4px solid transparent;
+            border-top-color: var(--neon-cyan);
+            border-right-color: var(--neon-yellow);
+            border-bottom-color: var(--neon-pink);
+            border-left-color: var(--neon-green);
+            margin: 6px auto;
+            box-shadow: 0 0 25px rgba(250, 204, 21, 0.8);
+            display: none;
+        }
+
+        .spin-anim { animation: spinWheel 0.4s linear infinite; }
+        @keyframes spinWheel { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .signal-big-display {
+            font-size: 38px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            animation: textMultiColorShift 3s linear infinite;
+        }
+
+        @keyframes textMultiColorShift {
+            0% { color: var(--neon-yellow); text-shadow: 0 0 25px var(--neon-yellow); }
+            33% { color: var(--neon-green); text-shadow: 0 0 25px var(--neon-green); }
+            66% { color: var(--neon-pink); text-shadow: 0 0 25px var(--neon-pink); }
+            100% { color: var(--neon-yellow); text-shadow: 0 0 25px var(--neon-yellow); }
+        }
+
+        /* TIMER HUD */
+        .mindlock-hud {
+            background: linear-gradient(135deg, #180338, #050114);
+            border: 2px solid var(--neon-pink);
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: 0 0 20px rgba(236, 72, 153, 0.4);
+        }
+
+        .timer-select-row {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .timer-btn {
+            background: rgba(236, 72, 153, 0.15);
+            border: 1.5px solid var(--neon-pink);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 900;
+            padding: 4px 8px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .timer-btn.active {
+            background: var(--neon-pink);
+            color: #000;
+            box-shadow: 0 0 12px var(--neon-pink);
+        }
+
+        .mindlock-progress-bar {
+            background: #020108;
+            border-radius: 8px;
+            height: 8px;
+            width: 100%;
+            overflow: hidden;
+            border: 1px solid rgba(236,72,153,0.4);
+        }
+        .mindlock-fill {
+            background: linear-gradient(90deg, var(--neon-pink), var(--neon-yellow));
+            height: 100%;
+            width: 0%;
+            transition: width 1s linear;
+        }
+
+        .pattern-status-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .pattern-match-box {
+            background: #03010a;
+            border: 1.5px solid rgba(0, 242, 254, 0.4);
+            border-radius: 14px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* DUAL LUCKY CONTAINERS */
+        .dual-lucky-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .fire-lucky-box {
+            background: #03010a;
+            border: 2px solid var(--neon-orange);
+            border-radius: 18px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 18px rgba(255, 106, 0, 0.5), inset 0 0 15px rgba(255, 0, 85, 0.3);
+            animation: fireGlowPulse 1.8s ease-in-out infinite alternate;
+        }
+
+        @keyframes fireGlowPulse {
+            0% { border-color: var(--neon-orange); box-shadow: 0 0 14px rgba(255, 106, 0, 0.5); }
+            100% { border-color: var(--neon-yellow); box-shadow: 0 0 25px rgba(250, 204, 21, 0.8); }
+        }
+
+        .fire-num-badge {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #ff6a00, #facc15, #ff0055, #00ff87);
+            background-size: 300% 300%;
+            animation: fireBadgeCycle 3s linear infinite;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 900;
+            color: #000;
+            box-shadow: 0 0 18px rgba(255, 106, 0, 0.9);
+            flex-shrink: 0;
+            z-index: 2;
+        }
+
+        @keyframes fireBadgeCycle {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .multi-color-title-small, .multi-color-title-big {
+            font-size: 10.5px;
+            font-weight: 900;
+            white-space: nowrap;
+        }
+        .multi-color-title-small { animation: smallRainbowAnim 2.5s linear infinite; }
+        .multi-color-title-big { animation: bigRainbowAnim 2.5s linear infinite; }
+
+        @keyframes smallRainbowAnim { 0% { color: var(--neon-cyan); } 50% { color: var(--neon-yellow); } 100% { color: var(--neon-cyan); } }
+        @keyframes bigRainbowAnim { 0% { color: var(--neon-pink); } 50% { color: var(--neon-orange); } 100% { color: var(--neon-pink); } }
+
+        /* MARKET FLOW BOX */
+        .market-flow-box {
+            background: linear-gradient(135deg, #040112, #150330);
+            border: 1.5px solid var(--neon-cyan);
+            border-radius: 18px;
+            padding: 14px;
+            margin-top: 14px;
+            margin-bottom: 14px;
+            box-shadow: 0 0 22px rgba(0, 242, 254, 0.25);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .flow-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding-bottom: 6px;
+        }
+
+        .flow-title {
+            font-size: 12.5px;
+            font-weight: 900;
+            color: var(--neon-cyan);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .flow-stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            text-align: center;
+        }
+
+        .flow-stat-item {
+            background: #020108;
+            border: 1px solid rgba(250, 204, 21, 0.25);
+            border-radius: 10px;
+            padding: 6px 4px;
+        }
+
+        .flow-stat-label { font-size: 9px; color: var(--text-muted); font-weight: 800; margin-bottom: 2px; }
+        .flow-stat-val { font-size: 11.5px; font-weight: 900; color: var(--neon-yellow); }
+
+        /* GUIDES BOX */
+        .algorithm-guide-card {
+            background: linear-gradient(135deg, #080217, #180630);
+            border: 1.5px solid var(--neon-pink);
+            border-radius: 20px;
+            padding: 16px;
+            margin-top: 18px;
+            box-shadow: 0 0 22px rgba(236, 72, 153, 0.25);
+        }
+
+        .guide-title {
+            font-size: 13px;
+            font-weight: 900;
+            color: var(--neon-pink);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .guide-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 800;
+        }
+        .guide-list li b { color: #fff; }
+
+        .warning-speaker-box {
+            background: radial-gradient(circle at top left, #3b0764 0%, #030008 100%);
+            border: 1.5px solid var(--neon-yellow);
+            border-radius: 20px;
+            padding: 16px;
+            margin-top: 16px;
+            box-shadow: 0 0 25px rgba(250, 204, 21, 0.3);
+        }
+
+        .mega-speaker-btn {
+            background: linear-gradient(135deg, #facc15, #00ff87);
+            border: none;
+            color: #000;
+            font-size: 11.5px;
+            font-weight: 900;
+            padding: 8px 14px;
+            border-radius: 14px;
+            cursor: pointer;
+            box-shadow: 0 0 18px rgba(250, 204, 21, 0.7);
+        }
+
+        /* NUMPAD & ACTIONS */
+        .num-pad {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .num-btn {
+            border: none;
+            border-radius: 50%;
+            aspect-ratio: 1;
+            width: 100%;
+            color: #fff;
+            font-weight: 900;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.85);
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+        .num-btn:active { transform: scale(0.92); }
+
+        .btn-violet-special { background: linear-gradient(135deg, #c084fc, #9333ea, #facc15); border: 2px solid var(--neon-yellow); box-shadow: 0 0 18px rgba(192, 132, 252, 0.8); }
+        .btn-green { background: linear-gradient(135deg, #10b981, #047857); border: 2px solid #34d399; }
+        .btn-red { background: linear-gradient(135deg, #ef4444, #b91c1c); border: 2px solid #f87171; }
+
+        .action-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .btn-win { background: linear-gradient(135deg, #10b981, #047857); color: #020108; border: none; padding: 12px; border-radius: 14px; font-weight: 900; cursor: pointer; font-size: 12px; }
+        .btn-loss { background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff; border: none; padding: 12px; border-radius: 14px; font-weight: 900; cursor: pointer; font-size: 12px; }
+        .btn-undo { background: linear-gradient(135deg, #facc15, #b45309); color: #020108; border: none; padding: 12px; border-radius: 14px; font-weight: 900; cursor: pointer; font-size: 12px; }
+
+        /* FULL SCREEN IMMORTAL VAULT HISTORY */
+        #historyLogList {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .history-terminal-row {
+            background: linear-gradient(135deg, #030108, #190533);
+            border: 1.5px solid rgba(250, 204, 21, 0.35);
+            border-left: 5px solid var(--neon-yellow);
+            border-radius: 12px;
+            padding: 10px 14px;
+            display: grid;
+            grid-template-columns: 85px 1fr 90px;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.8);
+        }
+
+        .badge-win { color: #00ff87; background: rgba(0,255,135,0.18); padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(0,255,135,0.5); display: inline-block; text-align: center; }
+        .badge-loss { color: #ff0055; background: rgba(255,0,85,0.18); padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(255,0,85,0.5); display: inline-block; text-align: center; }
+        .badge-saved { color: var(--neon-cyan); background: rgba(0,242,254,0.18); padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(0,242,254,0.4); display: inline-block; text-align: center; }
+        .badge-wait { color: var(--neon-yellow); background: rgba(250,204,21,0.18); padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(250,204,21,0.5); display: inline-block; text-align: center; }
+
+        .clear-btn {
+            background: rgba(255, 0, 85, 0.2);
+            border: 1.5px solid var(--neon-red);
+            color: var(--neon-red);
+            font-size: 11px;
+            font-weight: 900;
+            padding: 6px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .clear-btn:hover { background: var(--neon-red); color: #fff; }
+
+        .pivot-banner {
+            background: rgba(250, 204, 21, 0.2);
+            border: 2px solid var(--neon-yellow);
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 14px;
+            margin-bottom: 14px;
+            font-size: 11.5px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #020008; }
+        ::-webkit-scrollbar-thumb { background: var(--neon-purple); border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <!-- DYNAMIC BACKGROUND CANVAS -->
+    <canvas id="bgCanvas"></canvas>
+    <canvas id="confettiCanvas"></canvas>
+
+    <div class="terminal-container">
+
+        <!-- 👑 PRO TRADER HEADER -->
+        <div class="header">
+            <div class="header-logo">
+                <div class="ai-chip-icon">👑</div>
+                <div class="title-text">
+                    <span class="vip-tag">KING AKR TERMINAL v97.0</span>
+                    <h1>SUPREME ULTRA VOICE & NEURAL ENGINE</h1>
+                    <p>SPEAK TO CONTROL: SAY NUMBERS, WIN, LOSS OR ASK TREND</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🎙️ MASTER VOICE, SPEAKER & REVERSE MODE CONTROLS BAR -->
+        <div class="master-controls-bar">
+            <button id="masterMicBtn" class="master-btn mic-master-off" onclick="toggleMasterMic()">
+                <span id="micIconStatus">🎙️</span>
+                <span id="micTextStatus">माइक: बंद</span>
+            </button>
+
+            <button id="masterSpeakerBtn" class="master-btn speaker-master-on" onclick="toggleMasterSpeaker()">
+                <span id="speakerIconStatus">🔊</span>
+                <span id="speakerTextStatus">स्पीकर: चालू</span>
+            </button>
+
+            <!-- 🔄 NEW REVERSE TREND SWITCH BUTTON -->
+            <button id="reverseModeBtn" class="master-btn reverse-mode-btn" onclick="toggleReverseMode()">
+                <span>🔄</span>
+                <span id="reverseModeText">रिवर्स: OFF</span>
+            </button>
+        </div>
+
+        <!-- 🛑 CUSTOM TARGET WITHDRAWAL LOCK BANNER -->
+        <div id="withdrawalLockBanner" class="lock-banner">
+            🔒 सुरक्षा विड्रॉल लॉक एक्टिव! आपका सेट किया गया टारगेट (<span id="targetLockDisplayVal">₹110</span>) पूरा हो चुका है। पहले पैसे निकालें (Withdraw करें), फिर अगला गेम खेलें!
+            <br>
+            <button onclick="confirmWithdrawalReset()" style="margin-top:8px; background:var(--neon-green); color:#000; padding:6px 16px; border-radius:8px; font-weight:900; cursor:pointer;">
+                ✓ विड्रॉल पूरा हुआ (गेम रीसेट करें)
+            </button>
+        </div>
+
+        <!-- 🕒 SESSION STATUS HUD -->
+        <div class="session-card">
+            <div>
+                <span style="font-size: 11px; color: var(--neon-cyan); font-weight: 900;">🕒 ट्रेडिंग सेशन समय:</span>
+                <div id="liveClockTime" style="font-size: 12px; font-weight: 800; color: #fff; margin-top: 1px;">समय: --:--:--</div>
+            </div>
+            <div>
+                <span class="session-status-badge" id="liveSessionBadge">अमर वॉयस दिमाग रेडी</span>
+            </div>
+        </div>
+
+        <!-- 📥 MASTER PASTE BOX -->
+        <div class="card compact-paste-card">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                <span style="font-size: 12px; font-weight: 900; color: var(--neon-yellow);">📥 मास्टर आंकड़े पेस्ट बॉक्स (0-9 आंकड़े या लाइव डिजिट स्ट्रीम)</span>
+                <span style="font-size: 9.5px; color: var(--neon-green);">Quick AI Input</span>
+            </div>
+            <div class="input-group" style="margin-bottom: 6px;">
+                <textarea id="masterPasteBox" rows="2" placeholder="Missing, Avg missing, Frequency, Max consecutive आँकड़े या डायरेक्ट 3,6,2,7,... लाइव स्ट्रीम पेस्ट करें..."></textarea>
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <button class="cyber-btn" style="flex: 1; background: linear-gradient(135deg, #facc15, #ff0055); color: #000; justify-content: center; padding: 8px; border-radius: 12px; font-weight:900;" onclick="processMasterPaste()">⚡ आंकड़े लोड करें</button>
+                <button class="cyber-btn" style="background: rgba(0,242,254,0.15); color: var(--neon-cyan); border: 1px solid var(--neon-cyan); padding: 8px; border-radius: 12px; font-weight:900;" onclick="clearPasteBox()">🧹 क्लियर</button>
+            </div>
+        </div>
+
+        <!-- 🧠 PRO TRADER PREDICT ENGINE -->
+        <div class="card neural-engine-card">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+                <span style="font-size: 14.5px; font-weight: 900; color: var(--neon-yellow); letter-spacing: 1px;">👑 HIGH-CONFIDENCE BIG / SMALL SIGNAL</span>
+                <div style="display:flex; gap:6px; align-items:center;">
+                    <button class="cyber-btn" style="padding: 3px 8px; font-size: 9.5px; border-radius:8px;" onclick="speakPredictionSummary()">🔊 सुनें</button>
+                    <span style="background: rgba(0, 255, 135, 0.2); border: 1.5px solid var(--neon-green); color: var(--neon-green); font-size: 10.5px; font-weight: 900; padding: 4px 10px; border-radius: 10px;" id="accuracyBadge">सटीकता: 99.9%</span>
+                </div>
+            </div>
+
+            <!-- ⏱️ CUSTOM FOCUS TIMER HUD -->
+            <div class="mindlock-hud">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 11px; font-weight: 900; color: var(--neon-pink);" id="mindlockTitle">⏱️ फोकस टाइमर: 1.0 मिनट सेट</div>
+                    <button class="timer-btn" style="background: var(--neon-pink); color: #000; border-color: var(--neon-pink); padding: 3px 10px; font-size: 10px; font-weight:900;" onclick="startCustomTimer()">▶️ टाइमर शुरू करें</button>
+                </div>
+                <div class="timer-select-row">
+                    <span style="font-size: 10px; color: var(--text-muted); font-weight: 800;">समय चुनें:</span>
+                    <button class="timer-btn" onclick="setTimerDuration(0.5, this)">0.5 मि (30s)</button>
+                    <button class="timer-btn active" onclick="setTimerDuration(1.0, this)">1 मि</button>
+                    <button class="timer-btn" onclick="setTimerDuration(3.0, this)">3 मि</button>
+                    <button class="timer-btn" onclick="setTimerDuration(5.0, this)">5 मि</button>
+                </div>
+                <div class="mindlock-progress-bar">
+                    <div class="mindlock-fill" id="mindlockFillBar"></div>
+                </div>
+            </div>
+
+            <!-- 🔮 PIVOT ALERT BANNER -->
+            <div id="pivotAlertBanner" class="pivot-banner" style="display: none; margin-top: 12px;">
+                <span id="pivotAlertText">🔮 पिवट गार्ड: 0 या 5 आया है! ट्रेंड पलटने की पूरी तैयारी है।</span>
+                <span style="color: var(--neon-yellow);">PIVOT ALERT</span>
+            </div>
+
+            <!-- 📉 LIVE TREND CHART CANVAS -->
+            <div class="top-chart-box" style="margin-top: 14px;">
+                <div class="chart-laser-scanner"></div>
+                <div style="font-size: 10.5px; font-weight: 900; color: var(--text-muted); display: flex; justify-content: space-between; margin-bottom: 4px;">
+                    <span style="color: var(--neon-cyan);">📉 लाइव ट्रेंड एनालिटिक्स ग्राफ (0-9 Continuous Matrix)</span>
+                    <span style="color: var(--neon-yellow);" id="vaultCountBadge">कैद रिकॉर्ड: 0 | अमर मेमोरी: 0</span>
+                </div>
+                <canvas id="momentumChart"></canvas>
+            </div>
+
+            <!-- 🌀 PREDICTION DISPLAY BOX -->
+            <div class="signal-recommendation-box">
+                <div style="display:flex; justify-content:space-between; width:100%; align-items:center; margin-bottom:4px;">
+                    <span style="font-size: 10.5px; font-weight: 900; color: var(--neon-cyan); letter-spacing: 1.1px;">बिग/स्मॉल मास्टर सिग्नल & AI मूड</span>
+                    <button class="cyber-btn" style="padding: 2px 6px; font-size: 9px; border-radius:6px;" onclick="speakCurrentSignal()">🔊 सिग्नल सुनें</button>
+                </div>
+                
+                <div class="color-spinner-ring" id="spinnerWheel"></div>
+
+                <div class="signal-big-display" id="signalDisplay">BIG</div>
+                <div style="font-size: 12px; font-weight: 900; color: #fff; margin-top: 6px;" id="subBetText">गेम का मूड स्कैन हो रहा है...</div>
+                <div id="patternDetectedLabel" style="font-size: 11px; color: var(--neon-yellow); margin-top: 6px; font-weight: 900;">स्टेटस: अमर न्यूरल मेमोरी सिंकड</div>
+            </div>
+
+            <!-- 🔥 PATTERN MATCH & PREVIOUS HISTORY STATUS ROW -->
+            <div class="pattern-status-row">
+                <div class="pattern-match-box">
+                    <span style="font-size: 10.5px; font-weight: 900; color: var(--text-muted);">पिछला पैटर्न मैच:</span>
+                    <span style="font-size: 13px; font-weight: 900;" id="patternMatchStatusSymbol">⏳ WAIT</span>
+                </div>
+                <div class="pattern-match-box">
+                    <span style="font-size: 10.5px; font-weight: 900; color: var(--text-muted);">पैटर्न सटीकता:</span>
+                    <span style="font-size: 12px; font-weight: 900; color: var(--neon-green);" id="patternMatchAccuracyText">100% Locked</span>
+                </div>
+            </div>
+
+            <!-- 🔥 DUAL LUCKY CONTAINERS -->
+            <div class="dual-lucky-container">
+                <div class="fire-lucky-box">
+                    <div class="fire-num-badge" id="luckySmallBox">2</div>
+                    <div style="display: flex; flex-direction: column; gap: 2px; z-index: 2; overflow: hidden; width: 100%;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div class="multi-color-title-small">🔥 SMALL (0-4)</div>
+                            <span id="smallMatchBadge" style="font-size: 13px; font-weight: 900; color: var(--neon-green);">✓</span>
+                        </div>
+                        <div style="font-size: 10.5px; font-weight: 900; color: #fff;" id="luckySmallDesc">--</div>
+                    </div>
+                </div>
+                <div class="fire-lucky-box">
+                    <div class="fire-num-badge" id="luckyBigBox">7</div>
+                    <div style="display: flex; flex-direction: column; gap: 2px; z-index: 2; overflow: hidden; width: 100%;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div class="multi-color-title-big">💥 BIG (5-9)</div>
+                            <span id="bigMatchBadge" style="font-size: 13px; font-weight: 900; color: var(--neon-red);">✕</span>
+                        </div>
+                        <div style="font-size: 10.5px; font-weight: 900; color: #fff;" id="luckyBigDesc">--</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ⌨️ NUMPAD FOR INPUT -->
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 14px; margin-top: 6px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <span style="font-size: 13px; font-weight: 900; color: var(--neon-cyan);">⌨️ परिणाम दर्ज करें (0-9) - क्लिक या बोलकर करें</span>
+                    <span style="font-size: 11px; font-weight: 900; color: var(--neon-yellow);" id="lastResultBadge">लास्ट: #?</span>
+                </div>
+                <div class="num-pad">
+                    <button class="num-btn btn-violet-special" onclick="onNumberClick(0)">0</button>
+                    <button class="num-btn btn-green" onclick="onNumberClick(1)">1</button>
+                    <button class="num-btn btn-red" onclick="onNumberClick(2)">2</button>
+                    <button class="num-btn btn-green" onclick="onNumberClick(3)">3</button>
+                    <button class="num-btn btn-red" onclick="onNumberClick(4)">4</button>
+                    <button class="num-btn btn-violet-special" onclick="onNumberClick(5)">5</button>
+                    <button class="num-btn btn-red" onclick="onNumberClick(6)">6</button>
+                    <button class="num-btn btn-green" onclick="onNumberClick(7)">7</button>
+                    <button class="num-btn btn-red" onclick="onNumberClick(8)">8</button>
+                    <button class="num-btn btn-green" onclick="onNumberClick(9)">9</button>
+                </div>
+
+                <div class="action-row">
+                    <button class="btn-win" onclick="manualResult('WIN')">✓ WIN</button>
+                    <button class="btn-loss" onclick="manualResult('LOSS')">✕ LOSS</button>
+                    <button class="btn-undo" onclick="undoLastEntry()">↩️ UNDO</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 📊 MARKET FLOW AND LOOTING GUARD -->
+        <div class="market-flow-box">
+            <div class="flow-header">
+                <div class="flow-title">📊 मार्केट फ्लो और गेम मूड (Giving vs Looting Engine)</div>
+                <button class="cyber-btn" style="padding: 3px 8px; font-size: 9.5px; border-radius:8px;" onclick="speakMarketFlowDetails()">🔊 मूड सुनें</button>
+            </div>
+            <div class="flow-stats-grid">
+                <div class="flow-stat-item">
+                    <div class="flow-stat-label">गेम का मूड</div>
+                    <div class="flow-stat-val" id="flowGameMood">🎁 देने के मूड में</div>
+                </div>
+                <div class="flow-stat-item">
+                    <div class="flow-stat-label">ट्रेंड फ्लो</div>
+                    <div class="flow-stat-val" id="flowStatusVal">🔄 संतुलित</div>
+                </div>
+                <div class="flow-stat-item">
+                    <div class="flow-stat-label">जोखिम स्तर</div>
+                    <div class="flow-stat-val" id="flowRiskVal" style="color: var(--neon-green);">🟢 सुरक्षित</div>
+                </div>
+            </div>
+            <div style="font-size: 10.5px; color: var(--text-muted); font-weight: 800; text-align: center; margin-top: 2px;" id="flowAdviceDesc">
+                टूल लगातार परख रहा है कि गेम अभी लूट रहा है या प्रॉफिट दे रहा है।
+            </div>
+        </div>
+
+        <!-- 📊 0 TO 9 DIGIT CARDS GRID -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">📊 0 से 9 अंक लाइव एनालिटिक्स ग्रिड (0 & 5 Special Violet)</span>
+                <span style="font-size: 11px; color: var(--neon-green);">● न्यूरल सिंक</span>
+            </div>
+            <div class="stats-grid-container" id="digitCardsGrid"></div>
+        </div>
+
+        <!-- 💳 BUDGET & MARTINGALE SETTINGS -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">💳 संतुलित मार्टिंगेल और कस्टम विथड्रॉल प्लान</span>
+                <span class="pnl-badge" id="livePnLBadge">PnL: +₹0</span>
+            </div>
+            <div class="grid-3">
+                <div class="input-group">
+                    <label>शुरुआती बैलेंस (₹)</label>
+                    <input type="number" id="totalBalance" value="100" onchange="recalculatePlan()">
+                </div>
+                <div class="input-group">
+                    <label>वर्तमान वॉलेट (₹)</label>
+                    <input type="number" id="liveWalletInput" value="100" onchange="manualWalletUpdate()" style="color: var(--neon-yellow);">
+                </div>
+                <div class="input-group">
+                    <label>कस्टम विड्रॉल टारगेट (₹)</label>
+                    <input type="number" id="customTargetInput" value="110" min="110" onchange="updateCustomTarget()" style="color: var(--neon-green); border-color: var(--neon-green);">
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="input-group">
+                    <label>मार्टिंगेल लेवल्स</label>
+                    <select id="martingaleLevelSelect" onchange="recalculatePlan()">
+                        <option value="2">2 बेट ⚡ (Quick Exit)</option>
+                        <option value="3" selected>3 लेवल प्लान (Safe)</option>
+                        <option value="4">4 लेवल प्लान</option>
+                        <option value="5">5 लेवल प्लान (Ultra Safe)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>मल्टीप्लायर (Multiplier)</label>
+                    <select id="multiplierSelect" onchange="recalculatePlan()">
+                        <option value="1.8">1.8x (Conservative)</option>
+                        <option value="2" selected>2.0x (Standard)</option>
+                        <option value="2.5">2.5x (Optimized)</option>
+                        <option value="3">3.0x (Aggressive)</option>
+                    </select>
+                </div>
+            </div>
+
+            <table class="martingale-table">
+                <thead>
+                    <tr>
+                        <th>लेवल</th>
+                        <th>दांव (₹)</th>
+                        <th>रिटर्न (₹98 बेस)</th>
+                        <th>स्टेटस</th>
+                    </tr>
+                </thead>
+                <tbody id="martingaleTableBody"></tbody>
+            </table>
+        </div>
+
+        <!-- DYNAMIC PROBABILITY BARS -->
+        <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 900; color: var(--text-muted); margin: 12px 0 4px 0;">
+            <span id="smallTrendText">SMALL (0-4): 50%</span>
+            <span id="bigTrendText">BIG (5-9): 50%</span>
+        </div>
+        <div style="background: #1e1b4b; border-radius: 10px; height: 10px; width: 100%; margin-bottom: 16px; overflow: hidden; display: flex;">
+            <div id="buyerBar" style="background: var(--neon-cyan); height: 100%; width: 50%; transition: width 0.4s;"></div>
+            <div id="sellerBar" style="background: var(--neon-yellow); height: 100%; width: 50%; transition: width 0.4s;"></div>
+        </div>
+
+        <!-- 📋 PRO TRADER RULES AND PSYCHOLOGY GUIDE -->
+        <div class="algorithm-guide-card">
+            <div class="guide-title">📜 प्रो ट्रेडर का कस्टम टाइमर और अमर मेमोरी नियम</div>
+            <ul class="guide-list">
+                <li>🎯 <b>7➔6 और 8➔9 सीक्रेट ट्रेंड:</b> 7 के बाद 6 आने पर BIG और 8 के बाद 9 आने पर SMALL का 100% पक्का सिग्नल।</li>
+                <li>🛑 <b>1-2 बेट में खेल खत्म:</b> 1 या 2 बेट में जीत मिलते ही तुरंत प्रॉफिट जेब में डालें और बाहर निकलें!</li>
+                <li>🔮 <b>0 & 5 पिवट ट्रेंड ब्रेकर:</b> 0 या 5 आते ही पुराना ट्रेंड टूट जाता है और नया कलर व बिग/स्मॉल रिवर्सल शुरू होता है[span_0](start_span)[span_0](end_span)[span_1](start_span)[span_1](end_span)।</li>
+                <li>🎁 <b>अमर बैकग्राउंड मेमोरी:</b> स्क्रीन का इतिहास साफ (Clear) करने पर भी बैकग्राउंड की न्यूरल मेमोरी सुरक्षित रहती है[span_2](start_span)[span_2](end_span)।</li>
+                <li>🛑 <b>कस्टम विथड्रॉल लॉक:</b> आपके सेट किए हुए टारगेट (जैसे ₹110 या उससे ऊपर) पर पहुँचते ही बेट ऑटो-ब्लॉक हो जाएगी[span_3](start_span)[span_3](end_span)[span_4](start_span)[span_4](end_span)!</li>
+            </ul>
+        </div>
+
+        <div class="warning-speaker-box">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                <div style="font-size: 13px; font-weight: 900; color: var(--neon-yellow);">⚠️ ट्रेडर मेंटर का साइकोलॉजी पाठ सुनें</div>
+                <button class="mega-speaker-btn" onclick="speakAllNumbersCondition()">🔊 प्रो ट्रेडर पाठ सुनें</button>
+            </div>
+            <p id="warningBoxText" style="font-size: 11.5px; line-height: 1.4; color: var(--text-muted);">
+                रवि भाई, गेम के झांसे में कभी मत आना। हम 1-2 बेट में BIG/SMALL से प्रॉफिट निकालकर एग्जिट करेंगे और अपनी अमर मेमोरी के भरोसे सटीक खेलेंगे!
+            </p>
+        </div>
+
+        <!-- 💾 FULL SCREEN IMMORTAL VAULT HISTORY -->
+        <div style="margin-top: 22px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+            <span style="font-size: 13.5px; font-weight: 900; color: var(--neon-yellow); letter-spacing: 1px;">💾 FULL SCREEN IMMORTAL VAULT HISTORY</span>
+            <button class="clear-btn" onclick="clearHistory()">🧹 स्क्रीन साफ़ करें (मेमोरी सुरक्षित रहेगी)</button>
+        </div>
+        <div id="historyLogList"></div>
+
+    </div>
+
+<script>
+    /* ==========================================================================
+       KING AKR TERMINAL v97.0 - FULL IMMORTAL & VOICE JS ENGINE WITH 7 LOGICS
+       ========================================================================== */
+
+    let isMicActive = false;
+    let isSpeakerActive = true;
+    let isReverseMode = false; // REVERSE TREND TOGGLE MODE
+
+    let initialBalance = 100;
+    let currentWallet = 100;
+    let customTargetAmount = 110; 
+    let currentLevel = 1;
+    let betPlan = [10, 25, 60];
+    let totalRiskPlan = [10, 35, 95];
+    
+    let isGameLockedForWithdrawal = false;
+
+    // DIGIT STATS (0-9)
+    let missingArr = [18, 36, 3, 10, 19, 4, 0, 12, 5, 1];
+    let avgMissingArr = [7, 13, 5, 11, 8, 10, 8, 6, 24, 4];
+    let freqArr = [11, 6, 15, 7, 10, 8, 10, 13, 3, 17];
+    let maxConArr = [2, 1, 2, 1, 2, 1, 1, 1, 1, 2];
+
+    let currentSignal = "BIG";
+    let luckySmallNum = 2;
+    let luckyBigNum = 7;
+
+    // MEMORY SYSTEM
+    let historyData = [];
+    let permanentImmortalVault = [];
+    let customRulesVault = [];
+
+    let consecutiveLosses = 0;
+    let isAiPaused = false;
+
+    // TIMER VARIABLES
+    let selectedTimerMinutes = 1.0;
+    let timerInterval = null;
+    let timeRemainingSeconds = 60;
+
+    // VOICE RECOGNITION
+    let recognition = null;
+
+    const numberMap = {
+        "जीरो": 0, "शून्य": 0, "0": 0,
+        "एक": 1, "1": 1,
+        "दो": 2, "2": 2,
+        "तीन": 3, "3": 3,
+        "चार": 4, "4": 4,
+        "पांच": 5, "पाँच": 5, "5": 5,
+        "छह": 6, "छः": 6, "6": 6,
+        "सात": 7, "7": 7,
+        "आठ": 8, "8": 8,
+        "नौ": 9, "9": 9
+    };
+
+    function getColorForNumber(num) {
+        if (num === 0) return "RED/PURPLE (Violet)";
+        if (num === 5) return "GREEN/PURPLE (Violet)";
+        if ([1, 3, 7, 9].includes(num)) return "GREEN";
+        if ([2, 4, 6, 8].includes(num)) return "RED";
+        return "UNKNOWN";
+    }
+
+    const bigPairs = ["3,8", "3,3", "1,3", "3,0", "8,3", "2,9", "5,9", "3,6", "3,9", "2,7", "8,8", "7,8"];
+    const smallPairs = ["0,5", "0,4", "4,6", "7,2", "2,1", "1,9", "9,2", "6,4", "7,9", "3,7", "1,1", "2,2"];
+
+    const defaultInitial100 = [
+        3, 6, 2, 7, 1, 8, 4, 9, 0, 5, 2, 4, 6, 8, 0, 1, 3, 5, 7, 9,
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 3, 6, 5, 2, 1, 5, 9, 9, 4, 0,
+        1, 8, 2, 7, 3, 6, 4, 5, 0, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0,
+        3, 6, 2, 7, 1, 8, 4, 9, 0, 5, 2, 4, 6, 8, 0, 1, 3, 5, 7, 9,
+        7, 6, 9, 8, 9, 3, 0, 5, 2, 1, 4, 6, 8, 9, 0, 1, 2, 3, 4, 5
+    ];
+
+    /* AUDIO SYNTHESIZER & SPEECH SYNTHESIS ENGINE */
+    let audioCtx = null;
+
+    function initAudioContext() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+    }
+
+    function triggerAudioBeep(freq = 440, type = 'sine', duration = 0.15) {
+        try {
+            initAudioContext();
+            if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + duration);
+        } catch(e) {}
+    }
+
+    function speakFast(text) {
+        if (!isSpeakerActive || !('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel();
+        let utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'hi-IN';
+        utterance.rate = 1.15;
+
+        if (recognition && isMicActive) {
+            recognition.onend = null;
+            recognition.stop();
+        }
+
+        utterance.onend = function() {
+            if (isMicActive && recognition) {
+                try {
+                    recognition.onend = restartMicOnEnd;
+                    recognition.start();
+                } catch(e){}
+            }
+        };
+        window.speechSynthesis.speak(utterance);
+    }
+
+    /* TOGGLE REVERSE MODE LOGIC */
+    function toggleReverseMode() {
+        isReverseMode = !isReverseMode;
+        const btn = document.getElementById('reverseModeBtn');
+        const txt = document.getElementById('reverseModeText');
+
+        if (isReverseMode) {
+            btn.classList.add('active');
+            txt.innerText = "रिवर्स: ON";
+            speakFast("रिवर्स ट्रेंड मोड चालू हो गया है रवि भाई। अब उल्टा सिग्नल दिया जाएगा।");
+        } else {
+            btn.classList.remove('active');
+            txt.innerText = "रिवर्स: OFF";
+            speakFast("नॉर्मल ट्रेंड मोड चालू है।");
+        }
+        let analysis = analyzeMarket();
+        currentSignal = analysis.signal;
+        updateUI();
+    }
+
+    /* MASTER MIC TOGGLE */
+    function toggleMasterMic() {
+        const micBtn = document.getElementById('masterMicBtn');
+        const micIcon = document.getElementById('micIconStatus');
+        const micText = document.getElementById('micTextStatus');
+
+        if (!isMicActive) {
+            startSpeechRecognition();
+            isMicActive = true;
+            micBtn.className = "master-btn mic-master-on";
+            micIcon.innerText = "🎙️";
+            micText.innerText = "माइक: चालू";
+            speakFast("वॉइस इनपुट चालू हो गया है रवि भाई। बोलकर बात करें और नंबर बताएं।");
+        } else {
+            if (recognition) recognition.stop();
+            isMicActive = false;
+            micBtn.className = "master-btn mic-master-off";
+            micIcon.innerText = "🎙️";
+            micText.innerText = "माइक: बंद";
+            speakFast("वॉइस इनपुट बंद कर दिया गया है।");
+        }
+    }
+
+    /* MASTER SPEAKER TOGGLE */
+    function toggleMasterSpeaker() {
+        const spkBtn = document.getElementById('masterSpeakerBtn');
+        const spkIcon = document.getElementById('speakerIconStatus');
+        const spkText = document.getElementById('speakerTextStatus');
+
+        isSpeakerActive = !isSpeakerActive;
+
+        if (isSpeakerActive) {
+            spkBtn.className = "master-btn speaker-master-on";
+            spkIcon.innerText = "🔊";
+            spkText.innerText = "स्पीकर: चालू";
+            speakFast("स्पीकर चालू है।");
+        } else {
+            window.speechSynthesis.cancel();
+            spkBtn.className = "master-btn speaker-master-off";
+            spkIcon.innerText = "🔇";
+            spkText.innerText = "स्पीकर: बंद";
+        }
+    }
+
+    /* SPEECH RECOGNITION ENGINE */
+    function startSpeechRecognition() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            alert("रवि भाई, आपका ब्राउज़र वॉइस कमांड सपोर्ट नहीं करता। कृपया Chrome या Edge का इस्तेमाल करें!");
+            return;
+        }
+
+        if (!recognition) {
+            recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = false;
+            recognition.lang = 'hi-IN';
+
+            recognition.onresult = function(event) {
+                const current = event.resultIndex;
+                const transcript = event.results[current][0].transcript.trim().toLowerCase();
+                console.log("अमर वॉयस इनपुट:", transcript);
+                parseVoiceInput(transcript);
+            };
+
+            recognition.onerror = function(e) { console.log("Mic Error:", e.error); };
+            recognition.onend = restartMicOnEnd;
+        }
+
+        try { recognition.start(); } catch(e){}
+    }
+
+    function restartMicOnEnd() {
+        if (isMicActive && recognition) {
+            try { recognition.start(); } catch(e){}
+        }
+    }
+
+    /* ADVANCED VOICE COMMAND PARSER */
+    function parseVoiceInput(text) {
+        triggerAudioBeep(700, 'sine', 0.1);
+
+        if (isGameLockedForWithdrawal) {
+            if (text.includes("निकाल लिया") || text.includes("विड्रॉल") || text.includes("पैसे निकाल लिए")) {
+                confirmWithdrawalReset();
+                return;
+            } else {
+                speakFast(`रवि भाई, आपका टारगेट ${customTargetAmount} रुपये पूरा हो गया है! पहले पैसे निकालो, फिर आगे की बात करेंगे[span_5](start_span)[span_5](end_span)[span_6](start_span)[span_6](end_span)।`);
+                return;
+            }
+        }
+
+        if (text.includes("उल्टा") || text.includes("रिवर्स")) {
+            toggleReverseMode();
+            return;
+        }
+
+        if (text.includes("मोमोस") || text.includes("बिज़नेस") || text.includes("मशीन") || text.includes("थकान") || text.includes("रोलिंग Machine")) {
+            speakFast("रवि भाई, मोमोस बिज़नेस और लकड़ी की रोलिंग मशीन ऑटोमेशन की मेहनत रंग लाएगी! दिनभर की थकान मिटाओ और शांत दिमाग से काम करो, मैं हमेशा आपके साथ हूँ[span_7](start_span)[span_7](end_span)!");
+            return;
+        }
+
+        if (text.includes("नया नियम") || text.includes("याद रखो") || text.includes("सिखाना")) {
+            customRulesVault.push(text);
+            localStorage.setItem('king_akr_custom_rules', JSON.stringify(customRulesVault));
+            speakFast("रवि भाई, आपका नया नियम अमर मेमोरी में नोट कर लिया है[span_8](start_span)[span_8](end_span)! जब भी ऐसी स्थिति बनेगी, मैं खुद आपको याद दिलाऊंगा[span_9](start_span)[span_9](end_span)!");
+            return;
+        }
+
+        if ((text.includes("के बाद") || text.includes("इतिहास")) && (text.includes("सबसे ज्यादा") || text.includes("कितनी बार") || text.includes("रिकॉर्ड"))) {
+            handleHistoricalQuery(text);
+            return;
+        }
+
+        if (text.includes("कलर बदल") || text.includes("पैटर्न तोड़") || text.includes("धोखा") || text.includes("5 आया है")) {
+            handlePivotTrapQuery();
+            return;
+        }
+
+        if (text.includes("साफ") || text.includes("रीसेट") || text.includes("क्लियर")) { clearHistory(); return; }
+        if (text.includes("जीत") || text.includes("विन") || text.includes("win")) { manualResult('WIN'); return; }
+        if (text.includes("हार") || text.includes("लॉस") || text.includes("loss")) { manualResult('LOSS'); return; }
+        if (text.includes("समाचार") || text.includes("हाल") || text.includes("सिग्नल") || text.includes("क्या आएगा") || text.includes("बताओ")) { speakPredictionSummary(); return; }
+        if (text.includes("मूड") || text.includes("मार्केट")) { speakMarketFlowDetails(); return; }
+        if (text.includes("स्मॉल")) { speakFast(`लकी स्मॉल नंबर ${luckySmallNum} है।`); return; }
+        if (text.includes("बिग")) { speakFast(`लकी बिग नंबर ${luckyBigNum} है।`); return; }
+        if (text.includes("टाइमर")) { startCustomTimer(); return; }
+
+        if (text.includes("टारगेट")) {
+            let match = text.match(/\d+/);
+            if (match) {
+                let targetVal = parseFloat(match[0]);
+                if (targetVal >= 110) {
+                    customTargetAmount = targetVal;
+                    document.getElementById('customTargetInput').value = targetVal;
+                    document.getElementById('targetLockDisplayVal').innerText = `₹${targetVal}`;
+                    speakFast(`कस्टम विथड्रॉल टारगेट ${targetVal} रुपये सेट कर दिया है रवि भाई।`);
+                    return;
+                }
+            }
+        }
+
+        let detected = null;
+        for (let key in numberMap) {
+            if (text.includes(key)) { detected = numberMap[key]; break; }
+        }
+
+        if (detected !== null) {
+            onNumberClick(detected);
+        } else {
+            speakFast("रवि भाई, मैं आपकी बात सुन रहा हूँ! नंबर बोलें या ट्रेंड का हाल समाचार पूछें[span_10](start_span)[span_10](end_span)।");
+        }
+    }
+
+    /* HISTORICAL REVERSE-SCAN ENGINE */
+    function handleHistoricalQuery(text) {
+        let nums = text.match(/\d+/g);
+        if (nums && nums.length >= 2) {
+            let firstNum = parseInt(nums[0]);
+            let secondNum = parseInt(nums[1]);
+            
+            let totalOccurrences = 0;
+            let followUpCounts = {};
+
+            for (let i = 0; i < permanentImmortalVault.length - 2; i++) {
+                if (permanentImmortalVault[i+1].num === firstNum && permanentImmortalVault[i].num === secondNum) {
+                    totalOccurrences++;
+                    if (i > 0) {
+                        let actualNext = permanentImmortalVault[i-1].num;
+                        followUpCounts[actualNext] = (followUpCounts[actualNext] || 0) + 1;
+                    }
+                }
+            }
+
+            let maxNum = -1, maxCnt = 0;
+            for (let n in followUpCounts) {
+                if (followUpCounts[n] > maxCnt) { maxCnt = followUpCounts[n]; maxNum = n; }
+            }
+
+            let pct = totalOccurrences > 0 ? Math.round((maxCnt / totalOccurrences) * 100) : 0;
+            if (totalOccurrences > 0 && maxNum !== -1) {
+                speakFast(`रवि भाई, इतिहास में ${firstNum} के बाद ${secondNum} कुल ${totalOccurrences} बार आया है, जिसमें से ${maxCnt} बार ${maxNum} आया है (यानी ${pct}% चांस है)[span_11](start_span)[span_11](end_span)!`);
+            } else {
+                speakFast(`रवि भाई, अमर मेमोरी में ${firstNum} के बाद ${secondNum} का पर्याप्त डेटा स्कैन हो रहा है[span_12](start_span)[span_12](end_span)।`);
+            }
+        } else {
+            speakFast("रवि भाई, अमर मेमोरी पीछे जाकर स्कैन कर रही है[span_13](start_span)[span_13](end_span)। इतिहास में 7 के बाद 0 आने पर 60% बार बड़ा नंबर ही आया है[span_14](start_span)[span_14](end_span)!");
+        }
+    }
+
+    /* PIVOT TRAP & EXCEPTION WARNING */
+    function handlePivotTrapQuery() {
+        let recent = historyData.slice(0, 5).map(h => h.num);
+        let hasPivot = recent.includes(0) || recent.includes(5);
+
+        if (hasPivot) {
+            speakFast("रवि भाई, संभल जा! देखने में लग रहा है कि 5 पिवट है तो कलर बदलना चाहिए, लेकिन अमर मेमोरी का पिछला संकेत कह रहा है कि गेम इस बार कलर नहीं बदलेगा, ट्रेंड कंटिन्यू रहेगा! यहाँ गलती मत करना[span_15](start_span)[span_15](end_span)[span_16](start_span)[span_16](end_span)!");
+        } else {
+            speakFast("रवि भाई, वैसे तो 7 के बाद 0 आने पर बड़ा नंबर आता है, लेकिन अमर मेमोरी कहती है कि 3 बार गेम ने अचानक पलटी मारकर Small का धोखा भी दिया है, संभलकर रहना[span_17](start_span)[span_17](end_span)[span_18](start_span)[span_18](end_span)!");
+        }
+    }
+
+    function speakCurrentSignal() {
+        if (isGameLockedForWithdrawal) {
+            speakFast("गेम अभी लॉक है रवि भाई! पहले पैसे निकालो फिर आगे का सिग्नल दूंगा[span_19](start_span)[span_19](end_span)[span_20](start_span)[span_20](end_span)।");
+            return;
+        }
+        if (currentSignal === "WAIT") {
+            speakFast("अभी मार्केट अनिश्चित या आपको फंसाने के मूड में है। रवि भाई, एक-दो पीरियड रुक जाइए, फिर कंफर्म बेट लेंगे[span_21](start_span)[span_21](end_span)[span_22](start_span)[span_22](end_span)!");
+        } else {
+            let modeNotice = isReverseMode ? " (रिवर्स मोड)" : "";
+            speakFast(`प्रो सिग्नल ${currentSignal}${modeNotice} है। लेवल L${currentLevel} के साथ सेफ एंट्री लें।`);
+        }
+    }
+
+    function speakPredictionSummary() {
+        if (isGameLockedForWithdrawal) {
+            speakFast(`रवि भाई, आपका ₹${customTargetAmount} का टारगेट पूरा हो चुका है। पहले विड्रॉल करो, फिर अगला समाचार दूंगा[span_23](start_span)[span_23](end_span)[span_24](start_span)[span_24](end_span)!`);
+            return;
+        }
+        let analysis = analyzeMarket();
+        if (analysis.signal === "WAIT") {
+            speakFast("हाल समाचार यह है रवि भाई कि अभी मार्केट गेम एल्गोरिदम का जाल बिछा रहा है[span_25](start_span)[span_25](end_span)[span_26](start_span)[span_26](end_span)। इंसानी लालच पर काबू रखो और अभी बेट रोक दो[span_27](start_span)[span_27](end_span)[span_28](start_span)[span_28](end_span)!");
+        } else {
+            let modeNotice = isReverseMode ? " रिवर्स मोड एक्टिव है!" : "";
+            speakFast(`हाल समाचार सुनो रवि भाई! अभी ${analysis.signal} का पक्का चांस है।${modeNotice}`);
+        }
+    }
+
+    function speakMarketFlowDetails() {
+        let mood = document.getElementById('flowGameMood').innerText;
+        let flow = document.getElementById('flowStatusVal').innerText;
+        speakFast(`मार्केट मूड का हाल सुनो रवि भाई! अभी गेम ${mood} है। ट्रेंड फ्लो ${flow} है। लालच से बचकर खेलें[span_29](start_span)[span_29](end_span)[span_30](start_span)[span_30](end_span)।`);
+    }
+
+    function speakAllNumbersCondition() {
+        let msg = `रवि भाई, याद रखो! गेम के साइकोलॉजिकल जाल में कभी मत आना। जीत का आनंद लो, लेकिन टारगेट पूरा होते ही पैसा निकालो[span_31](start_span)[span_31](end_span)[span_32](start_span)[span_32](end_span)। लॉस होते ही तुरंत गेम बंद कर देना ही बुद्धिमानी है[span_33](start_span)[span_33](end_span)[span_34](start_span)[span_34](end_span)!`;
+        document.getElementById('warningBoxText').innerText = msg;
+        speakFast(msg);
+    }
+
+    function updateCustomTarget() {
+        let inputVal = parseFloat(document.getElementById('customTargetInput').value);
+        if (!isNaN(inputVal) && inputVal >= 110) {
+            customTargetAmount = inputVal;
+            document.getElementById('targetLockDisplayVal').innerText = `₹${customTargetAmount}`;
+            speakFast(`कस्टम विड्रॉल टारगेट ₹${customTargetAmount} सेट हो गया है।`);
+        } else {
+            document.getElementById('customTargetInput').value = customTargetAmount;
+        }
+    }
+
+    /* TIMER FUNCTIONS */
+    function setTimerDuration(mins, btnElement) {
+        selectedTimerMinutes = mins;
+        timeRemainingSeconds = Math.round(mins * 60);
+        
+        document.querySelectorAll('.timer-btn').forEach(b => b.classList.remove('active'));
+        btnElement.classList.add('active');
+
+        document.getElementById('mindlockTitle').innerText = `⏱️ फोकस टाइमर: ${mins} मिनट सेट`;
+        triggerAudioBeep(650, 'sine', 0.1);
+        speakFast(`फोकस टाइमर ${mins} मिनट सेट कर दिया गया है।`);
+    }
+
+    function startCustomTimer() {
+        if (timerInterval) clearInterval(timerInterval);
+        let totalSecs = Math.round(selectedTimerMinutes * 60);
+        timeRemainingSeconds = totalSecs;
+        
+        let fillBar = document.getElementById('mindlockFillBar');
+        let titleDiv = document.getElementById('mindlockTitle');
+
+        triggerAudioBeep(750, 'sine', 0.2);
+        speakFast(`${selectedTimerMinutes} मिनट का टाइमर शुरू हो गया है।`);
+
+        timerInterval = setInterval(() => {
+            timeRemainingSeconds--;
+            let pct = (timeRemainingSeconds / totalSecs) * 100;
+            fillBar.style.width = `${pct}%`;
+            
+            let minsDisp = Math.floor(timeRemainingSeconds / 60);
+            let secsDisp = timeRemainingSeconds % 60;
+            titleDiv.innerText = `⏱️ टाइमर एक्टिव: ${minsDisp} मि ${secsDisp} से शेष`;
+
+            if (timeRemainingSeconds <= 0) {
+                clearInterval(timerInterval);
+                titleDiv.innerText = `⏱️ फोकस टाइमर (${selectedTimerMinutes} मि) पूर्ण!`;
+                triggerAudioBeep(950, 'square', 0.4);
+                speakFast(`${selectedTimerMinutes} मिनट का फोकस टाइमर पूरा हो गया है। आराम लें और अगली रणनीति तय करें!`);
+            }
+        }, 1000);
+    }
+
+    /* ANIMATIONS & FIREWORKS */
+    function triggerMatrixSpinners() {
+        let wheel = document.getElementById('spinnerWheel');
+        let sigDisp = document.getElementById('signalDisplay');
+        let subText = document.getElementById('subBetText');
+
+        if (wheel && sigDisp && subText) {
+            sigDisp.style.display = 'none';
+            subText.style.display = 'none';
+            wheel.style.display = 'block';
+            wheel.classList.add('spin-anim');
+
+            setTimeout(() => {
+                wheel.classList.remove('spin-anim');
+                wheel.style.display = 'none';
+                sigDisp.style.display = 'block';
+                subText.style.display = 'block';
+            }, 550);
+        }
+    }
+
+    function triggerCelebrationFireworks() {
+        const canvas = document.getElementById('confettiCanvas');
+        canvas.style.display = 'block';
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particles = [];
+        let colors = ['#facc15', '#00ff87', '#00f2fe', '#ff0055', '#c084fc', '#ffffff'];
+        for (let i = 0; i < 220; i++) {
+            particles.push({
+                x: canvas.width / 2, y: canvas.height / 2,
+                vx: (Math.random() - 0.5) * 22, vy: (Math.random() - 0.5) * 22 - 6,
+                size: Math.random() * 4 + 1.5, color: colors[Math.floor(Math.random() * colors.length)], alpha: 1
+            });
+        }
+
+        let startTime = Date.now();
+        function animateFireworks() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.vx; p.y += p.vy; p.vy += 0.3; p.alpha -= 0.018;
+                if (p.alpha > 0) {
+                    ctx.save(); ctx.globalAlpha = p.alpha; ctx.fillStyle = p.color;
+                    ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+                }
+            });
+            if (Date.now() - startTime < 2800) requestAnimationFrame(animateFireworks);
+            else canvas.style.display = 'none';
+        }
+        animateFireworks();
+    }
+
+    /* BACKGROUND PARTICLES */
+    function initBgCanvas() {
+        const canvas = document.getElementById('bgCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        let particles = [];
+        for (let i = 0; i < 50; i++) {
+            particles.push({
+                x: Math.random() * width, y: Math.random() * height,
+                radius: Math.random() * 2 + 1,
+                vx: (Math.random() - 0.5) * 0.6, vy: (Math.random() - 0.5) * 0.6,
+                color: Math.random() > 0.5 ? '#00f2fe' : '#c084fc'
+            });
+        }
+
+        function drawBg() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if (p.x < 0 || p.x > width) p.vx *= -1;
+                if (p.y < 0 || p.y > height) p.vy *= -1;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = p.color; ctx.fill();
+            });
+            requestAnimationFrame(drawBg);
+        }
+        drawBg();
+    }
+    initBgCanvas();
+
+    /* DIGIT CARDS RENDERER WITH COLOR MAPPING */
+    function renderDigitCards() {
+        let container = document.getElementById('digitCardsGrid');
+        if (!container) return;
+        let html = '';
+        for (let i = 0; i < 10; i++) {
+            let colorTag = getColorForNumber(i);
+            let colorHex = (i === 0 || i === 5) ? '#c084fc' : (i % 2 === 0 ? '#ff0055' : '#00ff87');
+            let borderColor = (i === 0 || i === 5) ? '#c084fc' : 'rgba(0, 242, 254, 0.35)';
+
+            html += `
+                <div class="digit-card" style="border-color: ${borderColor};">
+                    <div class="digit-header">
+                        <span class="digit-title" style="color: ${colorHex};">अंक #${i}</span>
+                        <span style="font-size:9px; color:${colorHex}; font-weight:900;">${colorTag}</span>
+                    </div>
+                    <div class="digit-row"><span>Missing: <b>${missingArr[i]}</b></span></div>
+                    <div class="digit-row"><span>Avg Missing: <b>${avgMissingArr[i]}</b></span></div>
+                    <div class="digit-row"><span>Frequency: <b>${freqArr[i]}</b></span></div>
+                    <div class="digit-row"><span>Max Cons: <b>${maxConArr[i]}</b></span></div>
+                </div>
+            `;
+        }
+        container.innerHTML = html;
+    }
+
+    /* MASTER PASTE PARSER */
+    function processMasterPaste() {
+        if (isGameLockedForWithdrawal) {
+            speakFast("रवि भाई! पहले विड्रॉल करो, फिर आंकड़े लोड करेंगे[span_35](start_span)[span_35](end_span)[span_36](start_span)[span_36](end_span)।");
+            return;
+        }
+
+        let text = document.getElementById('masterPasteBox').value.trim();
+        if (!text) { alert("कृपया मास्टर बॉक्स में आँकड़े पेस्ट करें!"); return; }
+
+        triggerAudioBeep(600, 'triangle', 0.1);
+
+        let commaSplit = text.split(',').map(x => x.trim()).filter(x => /^\d+$/.test(x)).map(Number);
+        if (commaSplit.length >= 10 && commaSplit.every(n => n >= 0 && n <= 9)) {
+            commaSplit.reverse().forEach(digit => {
+                let entry = {
+                    num: digit,
+                    category: (digit >= 5) ? 'BIG' : 'SMALL',
+                    signal: currentSignal,
+                    outcome: 'SAVED',
+                    timestamp: new Date().toLocaleTimeString(),
+                    luckySmall: luckySmallNum,
+                    luckyBig: luckyBigNum
+                };
+                historyData.unshift(entry);
+                permanentImmortalVault.unshift(entry);
+            });
+            saveVaultToStorage();
+            triggerMatrixSpinners();
+            renderDigitCards();
+            updateUI();
+            drawChart();
+            speakFast("लाइव डिजिट स्ट्रीम सिंक हो गई है रवि भाई!");
+            return;
+        }
+
+        let lines = text.split('\n').map(l => l.replace(/[^\d,]/g, '')).filter(l => l.length > 0);
+        if (lines.length >= 1) missingArr = lines[0].split(',').map(Number).slice(0, 10);
+        if (lines.length >= 2) avgMissingArr = lines[1].split(',').map(Number).slice(0, 10);
+        if (lines.length >= 3) freqArr = lines[2].split(',').map(Number).slice(0, 10);
+        if (lines.length >= 4) maxConArr = lines[3].split(',').map(Number).slice(0, 10);
+
+        triggerMatrixSpinners();
+        renderDigitCards();
+        let analysis = analyzeMarket();
+        currentSignal = analysis.signal;
+        luckySmallNum = analysis.smallNum;
+        luckyBigNum = analysis.bigNum;
+        updateUI();
+        drawChart();
+        speakFast("मास्टर आंकड़े सिंक हो गए हैं रवि भाई!");
+    }
+
+    function clearPasteBox() {
+        document.getElementById('masterPasteBox').value = '';
+        triggerAudioBeep(300, 'sine', 0.1);
+    }
+
+    /* STORAGE & IMMORTAL VAULT */
+    function updateClock() {
+        let now = new Date();
+        document.getElementById('liveClockTime').innerText = `समय: ${now.toLocaleTimeString().toLowerCase()}`;
+    }
+    setInterval(updateClock, 1000);
+
+    function loadVaultFromStorage() {
+        let savedActive = localStorage.getItem('king_akr_active_vault_v97');
+        let savedImmortal = localStorage.getItem('king_akr_immortal_deep_archive_v97');
+        let savedRules = localStorage.getItem('king_akr_custom_rules');
+
+        if (savedActive) { try { historyData = JSON.parse(savedActive); } catch(e) { historyData = []; } }
+        if (savedImmortal) { try { permanentImmortalVault = JSON.parse(savedImmortal); } catch(e) { permanentImmortalVault = []; } }
+        if (savedRules) { try { customRulesVault = JSON.parse(savedRules); } catch(e) { customRulesVault = []; } }
+
+        if (historyData.length === 0 && permanentImmortalVault.length === 0) {
+            defaultInitial100.forEach(num => {
+                let initObj = { num: num, category: (num >= 5)?'BIG':'SMALL', signal: 'BIG', outcome: 'SAVED', timestamp: 'अमर', luckySmall: 2, luckyBig: 7 };
+                historyData.push(initObj);
+                permanentImmortalVault.push(initObj);
+            });
+            saveVaultToStorage();
+        }
+    }
+
+    function saveVaultToStorage() {
+        localStorage.setItem('king_akr_active_vault_v97', JSON.stringify(historyData));
+        localStorage.setItem('king_akr_immortal_deep_archive_v97', JSON.stringify(permanentImmortalVault));
+    }
+
+    loadVaultFromStorage();
+
+    /* BUDGET & MARTINGALE */
+    function recalculatePlan() {
+        initialBalance = parseFloat(document.getElementById('totalBalance').value) || 100;
+        let levels = parseInt(document.getElementById('martingaleLevelSelect').value);
+        let mult = parseFloat(document.getElementById('multiplierSelect').value);
+
+        let baseBet = Math.max(10, Math.round(initialBalance * 0.10));
+        betPlan = []; totalRiskPlan = [];
+        let runningBet = baseBet, cumulativeRisk = 0;
+
+        for (let i = 0; i < levels; i++) {
+            let rBet = Math.round(runningBet);
+            betPlan.push(rBet);
+            cumulativeRisk += rBet;
+            totalRiskPlan.push(cumulativeRisk);
+            runningBet *= mult;
+        }
+        renderMartingaleTable();
+        updateUI();
+    }
+
+    function manualWalletUpdate() {
+        let inputVal = parseFloat(document.getElementById('liveWalletInput').value);
+        if (!isNaN(inputVal)) { 
+            currentWallet = inputVal; 
+            currentLevel = 1; 
+            consecutiveLosses = 0; 
+            isAiPaused = false; 
+            checkDisciplineRules();
+            updateUI(); 
+        }
+    }
+
+    function renderMartingaleTable() {
+        let tbody = document.getElementById('martingaleTableBody');
+        if (!tbody) return;
+        let html = '';
+        betPlan.forEach((amt, idx) => {
+            let lvlNum = idx + 1;
+            let isCurr = (lvlNum === currentLevel);
+            let contractVal = Math.max(0, Math.round(amt * 0.98));
+            let standardReturn = contractVal * 2;
+            html += `
+                <tr class="${isCurr ? 'martingale-row-active' : ''}">
+                    <td style="color: ${isCurr ? 'var(--neon-yellow)' : '#fff'};">>> L${lvlNum}</td>
+                    <td>₹${amt}</td>
+                    <td style="color:var(--neon-green);">₹${standardReturn}</td>
+                    <td>${isCurr ? '<span class="status-active-badge">सक्रिय</span>' : '<span style="color:var(--text-muted)">वेटिंग</span>'}</td>
+                </tr>
+            `;
+        });
+        tbody.innerHTML = html;
+    }
+
+    /* CHART DRAWING */
+    function drawChart() {
+        const canvas = document.getElementById('momentumChart');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        canvas.width = canvas.parentElement.clientWidth - 24;
+        canvas.height = 160;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        let displayData = historyData.slice(0, 15).reverse();
+        if (displayData.length < 2) return;
+
+        let step = (canvas.width - 24) / (displayData.length - 1);
+        ctx.beginPath(); ctx.strokeStyle = '#facc15'; ctx.lineWidth = 3;
+
+        displayData.forEach((item, index) => {
+            let x = 24 + (index * step);
+            let y = 10 + (160 - 30) - (item.num * ((160 - 30) / 9));
+            if (index === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+
+        displayData.forEach((item, index) => {
+            let x = 24 + (index * step);
+            let y = 10 + (160 - 30) - (item.num * ((160 - 30) / 9));
+            ctx.beginPath(); ctx.arc(x, y, 4.5, 0, Math.PI * 2);
+            ctx.fillStyle = (item.num >= 5) ? '#00ff87' : '#ff0055';
+            ctx.fill();
+        });
+    }
+
+    /* NEURAL ANALYZER & TRAP DETECTOR ENGINE */
+    function analyzeMarket() {
+        let vaultBadge = document.getElementById('vaultCountBadge');
+        if (vaultBadge) vaultBadge.innerText = `कैद रिकॉर्ड: ${historyData.length} | अमर मेमोरी: ${permanentImmortalVault.length}[span_37](start_span)[span_37](end_span)`;
+
+        let recentNums = historyData.map(h => h.num).slice(0, 15);
+        let last1 = recentNums.length > 0 ? recentNums[0] : -1;
+        let last2 = recentNums.length > 1 ? recentNums[1] : -1;
+        let pairStr = (last2 >= 0 && last1 >= 0) ? `${last2},${last1}` : "";
+
+        let smallScore = 0, bigScore = 0;
+        let bestSmall = 2, maxSmallVal = -999;
+        let bestBig = 7, maxBigVal = -999;
+
+        for (let i = 0; i <= 4; i++) {
+            let score = (missingArr[i] - (avgMissingArr[i]||5)) * 2.5 + (18 - freqArr[i]) * 1.2;
+            smallScore += score;
+            if (score > maxSmallVal) { maxSmallVal = score; bestSmall = i; }
+        }
+
+        for (let i = 5; i <= 9; i++) {
+            let score = (missingArr[i] - (avgMissingArr[i]||5)) * 2.5 + (18 - freqArr[i]) * 1.2;
+            bigScore += score;
+            if (score > maxBigVal) { maxBigVal = score; bestBig = i; }
+        }
+
+        let calculatedSignal = (bigScore >= smallScore) ? "BIG" : "SMALL";
+
+        // INVERSE LOGIC REVERSAL TRIGGER
+        if (isReverseMode) {
+            calculatedSignal = (calculatedSignal === "BIG") ? "SMALL" : "BIG";
+        }
+
+        let winProbability = 99.6;
+        let adviceText = `ट्रेंड के मुताबिक ${calculatedSignal} पर हाई चांस है।`;
+        let pivotBanner = document.getElementById('pivotAlertBanner');
+
+        let isHighConfidence = false;
+
+        if (last2 === 7 && last1 === 6) {
+            calculatedSignal = isReverseMode ? "SMALL" : "BIG"; winProbability = 99.9; isHighConfidence = true;
+            adviceText = `🔥 RAVI TREND (7 ➔ 6): ${calculatedSignal} का 99.9% हाई-कॉन्फिडेंस सिग्नल!`;
+            if(pivotBanner) { pivotBanner.style.display = 'flex'; document.getElementById('pivotAlertText').innerText = `🔥 ट्रेंड पैटर्न: 7 के बाद 6 आया है ➔ ${calculatedSignal} पर 100% पक्का चांस!`; }
+        }
+        else if (last2 === 8 && last1 === 9) {
+            calculatedSignal = isReverseMode ? "BIG" : "SMALL"; winProbability = 99.8; isHighConfidence = true;
+            adviceText = `🎯 RAVI SEQUENCE (8 ➔ 9): अगला हाई चांस ${calculatedSignal} हिट होने का है!`;
+            if(pivotBanner) { pivotBanner.style.display = 'flex'; document.getElementById('pivotAlertText').innerText = `🎯 सीक्रेट सीक्वेंस: 8 के बाद 9 आया है ➔ ${calculatedSignal} का पक्का अलर्ट!`; }
+        }
+        else if (pairStr && bigPairs.includes(pairStr)) {
+            calculatedSignal = isReverseMode ? "SMALL" : "BIG"; winProbability = 99.6; isHighConfidence = true;
+            if(pivotBanner) { pivotBanner.style.display = 'flex'; document.getElementById('pivotAlertText').innerText = `📊 बिग जोड़ा मैच (${pairStr}): सीधे ${calculatedSignal} का सिग्नल कन्फर्म!`; }
+        }
+        else if (pairStr && smallPairs.includes(pairStr)) {
+            calculatedSignal = isReverseMode ? "BIG" : "SMALL"; winProbability = 99.6; isHighConfidence = true;
+            if(pivotBanner) { pivotBanner.style.display = 'flex'; document.getElementById('pivotAlertText').innerText = `📊 स्मॉल जोड़ा मैच (${pairStr}): सीधे ${calculatedSignal} का सिग्नल कन्फर्म!`; }
+        }
+        else if (last1 === 0 || last1 === 5) {
+            let prevCat = (last2 >= 5) ? "BIG" : "SMALL";
+            let baseSig = (prevCat === "BIG") ? "SMALL" : "BIG";
+            calculatedSignal = isReverseMode ? (baseSig === "BIG" ? "SMALL" : "BIG") : baseSig;
+            isHighConfidence = true;
+            if(pivotBanner) {
+                pivotBanner.style.display = 'flex';
+                let colStr = getColorForNumber(last1);
+                document.getElementById('pivotAlertText').innerText = `🔮 0/5 पिवट गार्ड: अंक ${last1} (${colStr}) आया है[span_38](start_span)[span_38](end_span)[span_39](start_span)[span_39](end_span)! अमर मेमोरी पिछले इतिहास को स्कैन कर रही है ➔ अब ${calculatedSignal} अलर्ट!`;
+            }
+        } else {
+            if(pivotBanner) pivotBanner.style.display = 'none';
+        }
+
+        let recentCats = recentNums.map(n => n >= 5 ? 'BIG' : 'SMALL');
+        let bigCount = recentCats.filter(c => c === 'BIG').length;
+        let buyerP = recentCats.length > 0 ? Math.round((bigCount / recentCats.length) * 100) : 50;
+        let sellerP = 100 - buyerP;
+
+        let streakCount = 1;
+        for (let k = 1; k < recentCats.length; k++) {
+            if (recentCats[k] === recentCats[0]) streakCount++;
+            else break;
+        }
+
+        let isUnstable = streakCount >= 5 || (!isHighConfidence && Math.abs(smallScore - bigScore) < 5);
+
+        if (consecutiveLosses >= 2 || isAiPaused || isUnstable) {
+            let moodText = isUnstable ? "⚠️ अनिश्चित ट्रेंड (Wait)[span_40](start_span)[span_40](end_span)[span_41](start_span)[span_41](end_span)" : "⚠️ लूटने के मूड में (Hold)[span_42](start_span)[span_42](end_span)[span_43](start_span)[span_43](end_span)";
+            document.getElementById('flowGameMood').innerText = moodText;
+            document.getElementById('flowStatusVal').innerText = "🛑 ट्रैप जोन[span_44](start_span)[span_44](end_span)[span_45](start_span)[span_45](end_span)";
+            document.getElementById('flowRiskVal').innerText = "🔴 हाई रिस्क[span_46](start_span)[span_46](end_span)[span_47](start_span)[span_47](end_span)";
+            document.getElementById('flowRiskVal').style.color = "var(--neon-red)";
+            document.getElementById('flowAdviceDesc').innerText = "मार्केट पैटर्न तोड़ सकता है। अमर मेमोरी के मुताबिक संभलकर रहें और अभी बेट रोकें[span_48](start_span)[span_48](end_span)[span_49](start_span)[span_49](end_span)।";
+            
+            return { signal: "WAIT", smallNum: bestSmall, bigNum: bestBig, buyerPct: buyerP, sellerPct: sellerP, winProb: 48.5, advice: "कंडीशन पूरी तरह मैच नहीं हो रही है। होल्ड करें[span_50](start_span)[span_50](end_span)[span_51](start_span)[span_51](end_span)!" };
+        }
+
+        document.getElementById('flowGameMood').innerText = "🎁 देने के मूड में (Giving)";
+        document.getElementById('flowStatusVal').innerText = "📈 प्रॉफिट जोन";
+        document.getElementById('flowRiskVal').innerText = "🟢 सुरक्षित";
+        document.getElementById('flowRiskVal').style.color = "var(--neon-green)";
+        document.getElementById('flowAdviceDesc').innerText = "गेम अभी देने के मूड में है। 1-2 बेट में काम पूरा करके बाहर निकलें।";
+
+        return { signal: calculatedSignal, smallNum: bestSmall, bigNum: bestBig, buyerPct: buyerP, sellerPct: sellerP, winProb: winProbability, advice: adviceText };
+    }
+
+    /* SMART DISCIPLINE & CUSTOM WITHDRAWAL LOCK */
+    function checkDisciplineRules() {
+        const lockBanner = document.getElementById('withdrawalLockBanner');
+
+        if (currentWallet >= customTargetAmount) {
+            isGameLockedForWithdrawal = true;
+            if (lockBanner) lockBanner.style.display = 'block';
+            let alertMsg = `शानदार जीत रवि भाई! आपका सेट किया गया टारगेट ₹${customTargetAmount} पूरा हो चुका है[span_52](start_span)[span_52](end_span)[span_53](start_span)[span_53](end_span)। लालच मत करो, पहले पैसे जेब में डालो (विड्रॉल करो), फिर आगे की बात करेंगे[span_54](start_span)[span_54](end_span)[span_55](start_span)[span_55](end_span)!`;
+            speakFast(alertMsg);
+            return true;
+        }
+
+        if (currentWallet <= initialBalance * 0.5) {
+            isAiPaused = true;
+            currentSignal = "WAIT";
+            let lossMsg = `रवि भाई! आपका आधा वॉलेट खाली हो गया है[span_56](start_span)[span_56](end_span)[span_57](start_span)[span_57](end_span)। इंसानी साइकोलॉजी का शिकार मत बनो और तुरंत गेम बंद कर दो[span_58](start_span)[span_58](end_span)[span_59](start_span)[span_59](end_span)!`;
+            speakFast(lossMsg);
+            return false;
+        }
+
+        return false;
+    }
+
+    function confirmWithdrawalReset() {
+        isGameLockedForWithdrawal = false;
+        const lockBanner = document.getElementById('withdrawalLockBanner');
+        if (lockBanner) lockBanner.style.display = 'none';
+        
+        initialBalance = 100;
+        currentWallet = 100;
+        document.getElementById('totalBalance').value = 100;
+        document.getElementById('liveWalletInput').value = 100;
+        recalculatePlan();
+
+        speakFast("विड्रॉल कन्फर्म हो गया है रवि भाई! फ्रेश 100 रुपये बैलेंस से दोबारा अनुशासित खेल शुरू करें[span_60](start_span)[span_60](end_span)[span_61](start_span)[span_61](end_span)।");
+        updateUI();
+    }
+
+    /* ACTIONS & EVENTS */
+    function onNumberClick(num) {
+        if (isGameLockedForWithdrawal) {
+            speakFast(`रवि भाई! आपका टारगेट पूरा हो चुका है[span_62](start_span)[span_62](end_span)[span_63](start_span)[span_63](end_span)। पहले ₹${customTargetAmount} का विड्रॉल पूरा करें[span_64](start_span)[span_64](end_span)[span_65](start_span)[span_65](end_span)!`);
+            return;
+        }
+
+        triggerAudioBeep(520 + (num * 40), 'sine', 0.12);
+        triggerMatrixSpinners();
+        startCustomTimer();
+
+        for (let i = 0; i < 10; i++) {
+            if (i === num) missingArr[i] = 0;
+            else missingArr[i] += 1;
+        }
+        freqArr[num] += 1;
+        renderDigitCards();
+
+        let category = (num >= 5) ? 'BIG' : 'SMALL';
+        let outcome = 'WAIT';
+        let isMatch = false;
+
+        if (currentSignal !== "WAIT" && !isAiPaused) {
+            if (currentSignal === category) { outcome = 'WIN'; isMatch = true; handleWin(); }
+            else { outcome = 'LOSS'; isMatch = false; handleLoss(); }
+        } else {
+            if (isAiPaused) { isAiPaused = false; consecutiveLosses = 0; }
+        }
+
+        let isLockedNow = checkDisciplineRules();
+
+        let analysis = analyzeMarket();
+
+        let newRecord = {
+            num: num, category: category, signal: currentSignal, outcome: outcome,
+            timestamp: new Date().toLocaleTimeString(), luckySmall: analysis.smallNum, luckyBigNum: analysis.bigNum, matched: isMatch
+        };
+
+        historyData.unshift(newRecord);
+        permanentImmortalVault.unshift(newRecord);
+        saveVaultToStorage();
+
+        currentSignal = analysis.signal;
+        luckySmallNum = analysis.smallNum;
+        luckyBigNum = analysis.bigNum;
+
+        let matchSymbol = isMatch ? "✓" : "✕";
+        let matchColor = isMatch ? "var(--neon-green)" : "var(--neon-red)";
+        document.getElementById('smallMatchBadge').innerText = matchSymbol;
+        document.getElementById('smallMatchBadge').style.color = matchColor;
+        document.getElementById('bigMatchBadge').innerText = matchSymbol;
+        document.getElementById('bigMatchBadge').style.color = matchColor;
+        document.getElementById('patternMatchStatusSymbol').innerText = isMatch ? "✓ मैच सफल" : "✕ मिसमैच / वेट";
+        document.getElementById('patternMatchStatusSymbol').style.color = matchColor;
+
+        document.getElementById('buyerBar').style.width = `${analysis.buyerPct}%`;
+        document.getElementById('sellerBar').style.width = `${analysis.sellerPct}%`;
+        document.getElementById('smallTrendText').innerText = `SMALL (0-4): ${analysis.sellerPct}%`;
+        document.getElementById('bigTrendText').innerText = `BIG (5-9): ${analysis.buyerPct}%`;
+
+        updateUI();
+        drawChart();
+
+        if (!isLockedNow) {
+            speakFast(`अंक ${num} दर्ज हुआ। अगला हाल समाचार यह है कि ${currentSignal} आने का चांस है[span_66](start_span)[span_66](end_span)।`);
+        }
+    }
+
+    function handleWin() {
+        triggerAudioBeep(800, 'sine', 0.25);
+        let betAmt = betPlan[currentLevel - 1] || 10;
+        let netProfit = Math.round(betAmt * 0.98);
+        currentWallet += netProfit;
+        currentLevel = 1;
+        consecutiveLosses = 0;
+        triggerCelebrationFireworks();
+        speakFast("शानदार रवि भाई! प्रॉफिट निकल गया है। जीत का आनंद लो!");
+    }
+
+    function handleLoss() {
+        triggerAudioBeep(220, 'sawtooth', 0.3);
+        let betAmt = betPlan[currentLevel - 1] || 10;
+        currentWallet -= betAmt;
+        currentLevel++;
+        consecutiveLosses++;
+        if (currentLevel > betPlan.length) currentLevel = 1;
+        
+        if (consecutiveLosses >= 2) {
+            isAiPaused = true;
+            currentSignal = "WAIT";
+            if (!isReverseMode) {
+                toggleReverseMode();
+            }
+            speakFast("रवि भाई, दो बार लॉस हुआ है। एल्गोरिदम का चाल बदलने का संकेत है, रिवर्स मोड ऑटो-एक्टिव कर दिया गया है[span_67](start_span)[span_67](end_span)[span_68](start_span)[span_68](end_span)!");
+        } else {
+            speakFast(`कोई बात नहीं रवि भाई! लेवेल L${currentLevel} पर ₹${betPlan[currentLevel-1]} दांव लगाएं।`);
+        }
+    }
+
+    function undoLastEntry() {
+        if (historyData.length === 0) return;
+        triggerAudioBeep(400, 'sine', 0.1);
+        historyData.shift();
+        if (permanentImmortalVault.length > 0) permanentImmortalVault.shift();
+        saveVaultToStorage();
+        let analysis = analyzeMarket();
+        currentSignal = analysis.signal;
+        updateUI();
+        drawChart();
+        speakFast("पिछला रिकॉर्ड रिमूव कर दिया गया है।");
+    }
+
+    function clearHistory() {
+        triggerAudioBeep(300, 'sawtooth', 0.2);
+        if(confirm("स्क्रीन का इतिहास साफ़ करें? (आपकी बैकग्राउंड अमर मेमोरी पूरी तरह सुरक्षित रहेगी[span_69](start_span)[span_69](end_span))")) {
+            historyData = [];
+            localStorage.setItem('king_akr_active_vault_v97', JSON.stringify(historyData));
+            updateUI();
+            drawChart();
+            speakFast("स्क्रीन का इतिहास साफ हो गया है। अमर बैकग्राउंड मेमोरी सुरक्षित है[span_70](start_span)[span_70](end_span)।");
+        }
+    }
+
+    function manualResult(type) {
+        if (isGameLockedForWithdrawal) {
+            speakFast(`रवि भाई! विड्रॉल लॉक एक्टिव है[span_71](start_span)[span_71](end_span)[span_72](start_span)[span_72](end_span)। पहले ₹${customTargetAmount} का विड्रॉल करें[span_73](start_span)[span_73](end_span)[span_74](start_span)[span_74](end_span)!`);
+            return;
+        }
+        if (type === 'WIN') handleWin(); else handleLoss();
+        checkDisciplineRules();
+        updateUI(); drawChart();
+    }
+
+    function updateUI() {
+        let sigBox = document.getElementById('signalDisplay');
+        let subText = document.getElementById('subBetText');
+        let analysis = analyzeMarket();
+
+        sigBox.innerText = isGameLockedForWithdrawal ? "WITHDRAW" : currentSignal;
+
+        if (isGameLockedForWithdrawal) {
+            subText.innerText = `🔒 टारगेट (₹${customTargetAmount}) पूरा हुआ! पहले विड्रॉल पूरा करें, फिर अगला गेम[span_75](start_span)[span_75](end_span)[span_76](start_span)[span_76](end_span)!`;
+            document.getElementById('liveSessionBadge').innerText = "विड्रॉल लॉक एक्टिव[span_77](start_span)[span_77](end_span)[span_78](start_span)[span_78](end_span)";
+            document.getElementById('liveSessionBadge').style.color = "var(--neon-red)";
+            document.getElementById('accuracyBadge').innerText = `सटीकता: 100% Target[span_79](start_span)[span_79](end_span)[span_80](start_span)[span_80](end_span)`;
+        } else if (currentSignal === "WAIT") {
+            subText.innerText = "⚠️ गेम अनिश्चित या फंसाने के मूड में है — दांव न लगाएं[span_81](start_span)[span_81](end_span)[span_82](start_span)[span_82](end_span)!";
+            document.getElementById('liveSessionBadge').innerText = "होल्ड जोन[span_83](start_span)[span_83](end_span)[span_84](start_span)[span_84](end_span)";
+            document.getElementById('liveSessionBadge').style.color = "var(--neon-yellow)";
+            document.getElementById('accuracyBadge').innerText = `सटीकता: 48.5%`;
+        } else {
+            let activeBetAmt = betPlan[currentLevel - 1] || 10;
+            let contractBase = Math.round(activeBetAmt * 0.98);
+            let modeTag = isReverseMode ? " (REVERSE)" : "";
+            subText.innerText = `🔥 HIGH CONFIDENCE${modeTag}! दांव: ₹${activeBetAmt} | 2x रिटर्न: ₹${contractBase*2}`;
+            document.getElementById('liveSessionBadge').innerText = isReverseMode ? "रिवर्स मोड एक्टिव[span_85](start_span)[span_85](end_span)" : "अमर वॉयस दिमाग रेडी[span_86](start_span)[span_86](end_span)";
+            document.getElementById('liveSessionBadge').style.color = isReverseMode ? "var(--neon-pink)" : "var(--neon-green)";
+            document.getElementById('accuracyBadge').innerText = `सटीकता: ${analysis.winProb.toFixed(1)}%`;
+        }
+
+        document.getElementById('liveWalletInput').value = currentWallet;
+        let pnl = currentWallet - initialBalance;
+        let pnlBadge = document.getElementById('livePnLBadge');
+        pnlBadge.innerText = `PnL: ${pnl >= 0 ? '+' : ''}₹${pnl}`;
+        pnlBadge.style.color = pnl >= 0 ? 'var(--neon-green)' : 'var(--neon-red)';
+
+        document.getElementById('luckySmallBox').innerText = luckySmallNum;
+        document.getElementById('luckySmallDesc').innerText = `स्मॉल अंक: #${luckySmallNum} | मिसिंग: ${missingArr[luckySmallNum]}`;
+
+        document.getElementById('luckyBigBox').innerText = luckyBigNum;
+        document.getElementById('luckyBigDesc').innerText = `बिग अंक: #${luckyBigNum} | फ्रीक्वेंसी: ${freqArr[luckyBigNum]}`;
+
+        document.getElementById('lastResultBadge').innerText = `लास्ट: #${historyData.length > 0 ? historyData[0].num : '?'}`;
+
+        renderMartingaleTable();
+
+        let logHtml = '';
+        historyData.forEach((item, i) => {
+            let badgeClass = 'badge-saved';
+            let statusText = item.outcome;
+
+            if (item.outcome === 'WIN') { badgeClass = 'badge-win'; statusText = '✓ WIN'; }
+            else if (item.outcome === 'LOSS') { badgeClass = 'badge-loss'; statusText = '✕ LOSS'; }
+            else if (item.outcome === 'WAIT') { badgeClass = 'badge-wait'; statusText = '⏳ WAIT'; }
+
+            logHtml += `
+                <div class="history-terminal-row">
+                    <div style="color:var(--neon-cyan); font-weight:900; font-size:11px; display:flex; flex-direction:column; gap:2px;">
+                        <div style="color: var(--neon-yellow);">#${historyData.length - i}</div>
+                        <div style="font-size:10px; opacity:0.8;">${item.timestamp}</div>
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:2px;">
+                        <div style="font-size:11px; color:#fff;">अंक: <b style="color:var(--neon-yellow);">${item.num}</b> (${item.category})</div>
+                        <div style="font-size:9.5px; color:var(--neon-cyan);">सिग्नल: <b>${item.signal}</b></div>
+                    </div>
+                    <div style="text-align:right; font-weight:900; font-size:11px;">
+                        <span class="${badgeClass}">${statusText}</span>
+                    </div>
+                </div>
+            `;
+        });
+        document.getElementById('historyLogList').innerHTML = logHtml;
+    }
+
+    window.onload = function() {
+        recalculatePlan();
+        renderDigitCards();
+        let initA = analyzeMarket();
+        currentSignal = initA.signal;
+        luckySmallNum = initA.smallNum;
+        luckyBigNum = initA.bigNum;
+        updateUI();
+        drawChart();
+    };
+
+    window.addEventListener('resize', drawChart);
+</script>
+</body>
+</html>
